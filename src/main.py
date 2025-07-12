@@ -4,7 +4,7 @@ import platform
 import joblib
 import mlflow
 import mlflow.sklearn
-from pathlib import Path
+from pathlib import Path 
 from datetime import datetime
 from src.data_loader import load_data, preprocess_data
 from src.evaluate import evaluate
@@ -24,8 +24,8 @@ logger=logging.getLogger("adult-income")
 run_name = f"run-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
 
 # MLflow config
-MLFLOW_URI = "http://localhost:5000"
-EXPERIMENT_NAME = "adult-income"
+MLFLOW_URI = "http://20.72.159.189:5000"
+EXPERIMENT_NAME = "adult-income-jordi-nadal"
 
 mlflow.set_tracking_uri(MLFLOW_URI)
 mlflow.set_experiment(EXPERIMENT_NAME)
