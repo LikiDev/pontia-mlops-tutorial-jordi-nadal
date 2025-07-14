@@ -1,14 +1,15 @@
 import logging
 import time
 import platform
+import os
 import joblib
 import mlflow
 import mlflow.sklearn
 from pathlib import Path 
 from datetime import datetime
-from src.data_loader import load_data, preprocess_data
-from src.evaluate import evaluate
-from src.model import train_model
+from data_loader import load_data, preprocess_data
+from evaluate import evaluate
+from model import train_model
 
 # Configurar logging (consola + archivo)
 logging.basicConfig(
@@ -21,7 +22,9 @@ logging.basicConfig(
 )
 logger=logging.getLogger("adult-income")
 
-run_name = f"run-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+run_name = os.getenv('RUN_NAME', 'run_name not found')
+
+
 
 # MLflow config
 MLFLOW_URI = "http://20.72.159.189:5000"
@@ -57,6 +60,11 @@ def main():
         # Save and log scaler and encoders
         joblib.dump(scaler, MODEL_DIR / "scaler.pkl")
         joblib.dump(encoders, MODEL_DIR / "encoders.pkl")
+        
+        mlflow.log_artifact(str(MODEL_DIR / "scaler.pkl"), artifact_path="preprocessing")
+        mlflow.log_artifact(str(MODEL_DIR / "encoders.pkl"), artifact_path="preprocessing")
+
+
         with open("run_id.txt", "w") as f:
             f.write(run.info.run_id)
 
